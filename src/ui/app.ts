@@ -1,4 +1,4 @@
-import { copyFor } from "../content/copies";
+import { renderResult } from "./result";
 import { parseYmd } from "../domain/date";
 import { pillarFromYmd } from "../domain/pillar";
 
@@ -15,8 +15,14 @@ function showForm(main: HTMLElement): void {
   const header = document.createElement("header");
   header.className = "entry-header";
   const title = document.createElement("h1");
-  title.textContent = "天中殺";
-  header.append(title);
+  title.textContent = "自分を知る";
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "eyebrow";
+  eyebrow.textContent = "算命学の自己分析";
+  const description = document.createElement("p");
+  description.className = "entry-description";
+  description.textContent = "生まれた日を手がかりに、価値観と人との関わりを読み解く。";
+  header.append(eyebrow, title, description);
   const form = document.createElement("form");
   form.setAttribute("aria-label", "生年月日");
   form.autocomplete = "off";
@@ -54,47 +60,10 @@ function showForm(main: HTMLElement): void {
 }
 
 function showResult(main: HTMLElement, ymd: { year: number; month: number; day: number }): void {
-  const copy = copyFor(pillarFromYmd(ymd).kind);
-  main.replaceChildren();
-  main.className = "result";
-  const title = document.createElement("h1");
-  title.textContent = copy.title;
-  title.tabIndex = -1;
-  const lead = paragraph("lead", copy.lead);
-  const distance = document.createElement("ul");
-  distance.dataset.part = "distance";
-  for (const line of [...copy.thin, ...copy.valued]) {
-    const item = document.createElement("li");
-    item.textContent = line;
-    distance.append(item);
-  }
-  const people = document.createElement("ul");
-  people.dataset.part = "people";
-  for (const name of copy.people) {
-    const item = document.createElement("li");
-    item.textContent = name;
-    people.append(item);
-  }
-  const reset = document.createElement("button");
-  reset.id = "reset";
-  reset.type = "button";
-  reset.textContent = "入れ直す";
-  reset.addEventListener("click", () => {
+  renderResult(main, pillarFromYmd(ymd), () => {
     showForm(main);
     main.querySelector<HTMLInputElement>('input[name="year"]')?.focus();
   });
-  const intro = document.createElement("section");
-  intro.className = "result-intro";
-  intro.append(title, lead);
-  main.append(
-    intro,
-    section("distance", "人との距離", distance),
-    section("scene", "今夜の場面", paragraph("scene", copy.scene)),
-    section("question", "隣への問い", paragraph("question", copy.question)),
-    section("people", "同じ天中殺の芸能人", people),
-    reset,
-  );
-  title.focus();
 }
 
 function labeled(label: string, name: string): HTMLLabelElement {
@@ -110,22 +79,4 @@ function labeled(label: string, name: string): HTMLLabelElement {
 function value(form: HTMLFormElement, name: string): string {
   const input = form.elements.namedItem(name);
   return input instanceof HTMLInputElement ? input.value : "";
-}
-
-function paragraph(part: string, text: string): HTMLParagraphElement {
-  const node = document.createElement("p");
-  node.dataset.part = part;
-  node.textContent = text;
-  return node;
-}
-
-function section(name: string, label: string, content: HTMLElement): HTMLElement {
-  const block = document.createElement("section");
-  block.className = `result-${name}`;
-  const heading = document.createElement("h2");
-  heading.id = `heading-${name}`;
-  heading.textContent = label;
-  block.setAttribute("aria-labelledby", heading.id);
-  block.append(heading, content);
-  return block;
 }
