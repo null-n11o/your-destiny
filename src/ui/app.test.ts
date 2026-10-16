@@ -84,4 +84,36 @@ describe("mount", () => {
     expect(field("year").value).toBe("");
     expect(document.querySelector("[data-part='lead']")).toBeNull();
   });
+
+  test("入力エラーを読み上げへ通知する", () => {
+    setup();
+    const alert = document.querySelector('[role="alert"]');
+    expect(alert).not.toBeNull();
+    expect(alert?.textContent).toBe("");
+    document.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    expect(alert?.textContent).toBe("年、月、日を入れてください。");
+    field("year").value = "1985年";
+    field("month").value = "3";
+    field("day").value = "12";
+    document.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    expect(alert?.textContent).toBe("その日は存在しません。入れ直してください。");
+  });
+
+  test("結果の見出しと再入力先へフォーカスを移す", () => {
+    setup();
+    field("year").value = "2000";
+    field("month").value = "1";
+    field("day").value = "1";
+    document.querySelector<HTMLButtonElement>('button[type="submit"]')!.focus();
+    document.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    const heading = document.querySelector("h1");
+    expect(heading).not.toBeNull();
+    expect(document.activeElement).toBe(heading);
+    const reset = document.querySelector<HTMLButtonElement>("#reset")!;
+    reset.focus();
+    reset.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(document.activeElement).toBe(field("year"));
+    expect(field("year").value).toBe("");
+  });
+
 });

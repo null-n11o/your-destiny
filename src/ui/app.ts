@@ -17,6 +17,7 @@ function showForm(main: HTMLElement): void {
   button.type = "submit";
   button.textContent = "見てみる";
   const message = document.createElement("p");
+  message.setAttribute("role", "alert");
   form.append(button, message);
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -42,6 +43,7 @@ function showResult(main: HTMLElement, ymd: { year: number; month: number; day: 
   main.replaceChildren();
   const title = document.createElement("h1");
   title.textContent = copy.title;
+  title.tabIndex = -1;
   const lead = paragraph("lead", copy.lead);
   const distance = document.createElement("ul");
   distance.dataset.part = "distance";
@@ -61,8 +63,12 @@ function showResult(main: HTMLElement, ymd: { year: number; month: number; day: 
   reset.id = "reset";
   reset.type = "button";
   reset.textContent = "入れ直す";
-  reset.addEventListener("click", () => showForm(main));
+  reset.addEventListener("click", () => {
+    showForm(main);
+    main.querySelector<HTMLInputElement>('input[name="year"]')?.focus();
+  });
   main.append(title, lead, distance, paragraph("scene", copy.scene), paragraph("question", copy.question), people, reset);
+  title.focus();
 }
 
 function labeled(label: string, name: string): HTMLLabelElement {
