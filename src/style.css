@@ -188,3 +188,11 @@ main.reading { max-width: 760px; counter-reset: chapter; }
   .year-theme { font-size: 22px; }
   [data-part="questions"] li { font-size: 15px; }
 }
+
+.reading [data-part="people"] { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+.reading [data-part="people"] li { min-width: 0; padding: 16px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.person-name { font-family: var(--serif); font-size: 19px; line-height: 1.7; }
+.person-meta { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+@media (max-width: 420px) {
+  .reading [data-part="people"] { grid-template-columns: 1fr; }
+}

@@ -21,7 +21,7 @@ beforeEach(()=>{
 });
 afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();vi.useRealTimers();});
 
-const chapters = ["あなたの全体像","人生で育てる軸","縁と人との関わり","強みとつまずき","力を発揮する仕事と環境","恋愛で相性のよい人","仕事で相性のよい人","今後3年間","自分を振り返る問い","同じ天中殺の芸能人"];
+const chapters = ["あなたの全体像","人生で育てる軸","縁と人との関わり","強みとつまずき","力を発揮する仕事と環境","恋愛で相性のよい人","仕事で相性のよい人","今後3年間","自分を振り返る問い","同じ天中殺の著名人"];
 describe("自己分析の画面",()=>{
   test("本人の年月日だけで自己分析を始める",()=>{
     setup();
@@ -58,7 +58,11 @@ describe("自己分析の画面",()=>{
     expect(body.length).toBeGreaterThanOrEqual(3500);
     expect(body.length).toBeLessThanOrEqual(5200);
     expect(document.querySelectorAll('[data-part="questions"] li')).toHaveLength(3);
-    expect([...document.querySelectorAll('[data-part="people"] li')].map(n=>n.textContent)).toEqual(["綾瀬はるか","明石家さんま","タモリ"]);
+    const people = [...document.querySelectorAll('[data-part="people"] li')];
+    expect(people).toHaveLength(7);
+    expect(people.map(n => n.querySelector(".person-name")?.textContent)).toEqual(expect.arrayContaining(["綾瀬はるか", "明石家さんま", "タモリ", "ロジャー・フェデラー", "スティーブ・ジョブズ"]));
+    expect(people.find(n => n.textContent?.includes("ロジャー・フェデラー"))?.textContent).toContain("テニス／スイス");
+    expect(people.find(n => n.textContent?.includes("スティーブ・ジョブズ"))?.textContent).toContain("Apple共同創業者／米国");
     expect(document.querySelector("form")).toBeNull();
     expect(document.activeElement).toBe(document.querySelector("h1"));
   });

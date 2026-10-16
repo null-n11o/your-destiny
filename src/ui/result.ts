@@ -1,4 +1,4 @@
-import { copyFor } from "../content/copies";
+import { peopleFor } from "../content/people";
 import { profileFor, type Profile } from "../content/profiles";
 import { annualCopyFor } from "../content/outlook";
 import { outlookFor, readingYears } from "../domain/outlook";
@@ -56,8 +56,13 @@ export function renderResult(main: HTMLElement, pillar: Pillar, reset: () => voi
   const questions = list(profile.questions, true);
   questions.dataset.part = "questions";
   reflection.append(questions, text("h3", "今週、一つ試すなら"), text("p", profile.action, "weekly-action"));
-  const people = chapter("people", "同じ天中殺の芸能人");
-  const names = list(copyFor(pillar.kind).people);
+  const people = chapter("people", "同じ天中殺の著名人");
+  const names = document.createElement("ul");
+  for (const person of peopleFor(pillar.kind)) {
+    const item = document.createElement("li");
+    item.append(text("p", person.name, "person-name"), text("p", `${person.role}／${person.country}`, "person-meta"));
+    names.append(item);
+  }
   names.dataset.part = "people";
   people.append(names);
   blocks.push(outlook, reflection, people);
