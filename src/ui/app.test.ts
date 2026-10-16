@@ -116,4 +116,21 @@ describe("mount", () => {
     expect(field("year").value).toBe("");
   });
 
+
+  test("結果を5つの見出し付きブロックとして読む", () => {
+    setup();
+    expect(document.querySelector("h1")?.textContent).toBe("天中殺");
+    field("year").value = "2000";
+    field("month").value = "1";
+    field("day").value = "1";
+    document.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    const blocks = [...document.querySelectorAll("main > section")];
+    expect(blocks).toHaveLength(5);
+    expect(blocks.map((block) => block.querySelector("h1, h2")?.textContent)).toEqual([
+      "子丑天中殺", "人との距離", "今夜の場面", "隣への問い", "同じ天中殺の芸能人",
+    ]);
+    expect(blocks[1].querySelectorAll("li")).toHaveLength(4);
+    expect(blocks[4].querySelectorAll("li")).toHaveLength(3);
+  });
+
 });

@@ -11,8 +11,23 @@ export function mount(root: HTMLElement): void {
 
 function showForm(main: HTMLElement): void {
   main.replaceChildren();
+  main.className = "entry";
+  const header = document.createElement("header");
+  header.className = "entry-header";
+  const title = document.createElement("h1");
+  title.textContent = "天中殺";
+  header.append(title);
   const form = document.createElement("form");
-  form.append(labeled("年", "year"), labeled("月", "month"), labeled("日", "day"));
+  form.setAttribute("aria-label", "生年月日");
+  form.autocomplete = "off";
+  const fields = document.createElement("fieldset");
+  const legend = document.createElement("legend");
+  legend.textContent = "生年月日";
+  const row = document.createElement("div");
+  row.className = "date-fields";
+  row.append(labeled("年", "year"), labeled("月", "month"), labeled("日", "day"));
+  fields.append(legend, row);
+  form.append(fields);
   const button = document.createElement("button");
   button.type = "submit";
   button.textContent = "見てみる";
@@ -35,12 +50,13 @@ function showForm(main: HTMLElement): void {
     }
     showResult(main, parsed);
   });
-  main.append(form);
+  main.append(header, form);
 }
 
 function showResult(main: HTMLElement, ymd: { year: number; month: number; day: number }): void {
   const copy = copyFor(pillarFromYmd(ymd).kind);
   main.replaceChildren();
+  main.className = "result";
   const title = document.createElement("h1");
   title.textContent = copy.title;
   title.tabIndex = -1;
@@ -67,7 +83,17 @@ function showResult(main: HTMLElement, ymd: { year: number; month: number; day: 
     showForm(main);
     main.querySelector<HTMLInputElement>('input[name="year"]')?.focus();
   });
-  main.append(title, lead, distance, paragraph("scene", copy.scene), paragraph("question", copy.question), people, reset);
+  const intro = document.createElement("section");
+  intro.className = "result-intro";
+  intro.append(title, lead);
+  main.append(
+    intro,
+    section("distance", "人との距離", distance),
+    section("scene", "今夜の場面", paragraph("scene", copy.scene)),
+    section("question", "隣への問い", paragraph("question", copy.question)),
+    section("people", "同じ天中殺の芸能人", people),
+    reset,
+  );
   title.focus();
 }
 
@@ -91,4 +117,15 @@ function paragraph(part: string, text: string): HTMLParagraphElement {
   node.dataset.part = part;
   node.textContent = text;
   return node;
+}
+
+function section(name: string, label: string, content: HTMLElement): HTMLElement {
+  const block = document.createElement("section");
+  block.className = `result-${name}`;
+  const heading = document.createElement("h2");
+  heading.id = `heading-${name}`;
+  heading.textContent = label;
+  block.setAttribute("aria-labelledby", heading.id);
+  block.append(heading, content);
+  return block;
 }
