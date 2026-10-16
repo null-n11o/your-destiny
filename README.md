@@ -29,3 +29,5 @@ npm run dev -- --host 127.0.0.1
 ハーネスはSuperpowers。作業規約は [AGENTS.md](AGENTS.md)。配置、友人へのURL共有、mainへのマージは、それぞれ明示の依頼がある時に行う。
 
 GitHubは [null-n11o/your-destiny](https://github.com/null-n11o/your-destiny)。公開範囲はprivate。
+
+Cloudflareの公開URLと自動デプロイの設定は [配置手順](docs/operations/cloudflare-pages.md) に記載した。
