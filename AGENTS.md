@@ -25,7 +25,13 @@ python3 /Users/nakanokentaro/01_kcp/tools/scripts/harness_sync.py resolve superp
 
 ## Commands
 
-製品の起動コマンドは未定。文書の確認は `git diff --check`。
+Node.js 22 以上。
+
+- `npm test`：Vitest
+- `npm run dev`：ローカル表示
+- `npm run build`：dist へ静的ファイルを出す
+
+文書の確認は `git diff --check`。Cloudflare への配置は、その操作の明示承認があるまで行わない。
 
 ## Architecture
 
