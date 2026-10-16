@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font: 16px/1.7 sans-serif;
+}
+main {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+label, button {
+  display: block;
+  margin: 0.75rem 0;
+}
+input {
+  font: inherit;
+  width: 8rem;
+}
