@@ -6,7 +6,8 @@
 
 - 要求の正本: `/Users/nakanokentaro/01_kcp/workspace/product/ideas/2026-10-15-算命学toC/04-requirements-v1.md`
 - 入力資料の写し: `docs/input/04-requirements-v1.md`。会社側を更新したときは写しも合わせる。写しは入力資料である。設計の完了は設計書の確認で判断する。
-- 設計書と実装計画は未作成。置き場は `docs/superpowers/specs/` と `docs/superpowers/plans/`。
+- 設計書: `docs/superpowers/specs/2026-10-16-your-destiny-design.md`。
+- 実装計画: `docs/superpowers/plans/2026-10-16-your-destiny.md`。
 
 ## 開発ハーネス
 
@@ -20,7 +21,7 @@ python3 /Users/nakanokentaro/01_kcp/tools/scripts/harness_sync.py resolve superp
 
 返された SKILL.md を全文読み、依頼に合う子スキルも同じ resolver で解決する。ハーネス本体をこのリポジトリへコピーしない。pstack と gstack を同時に既定にしない。
 
-文書の種類、保存先、作成順序、レビュー、承認は Superpowers に従う。現在地は brainstorming。設計の確認前に製品コードを書かない。
+文書の種類、保存先、作成順序、レビュー、承認は Superpowers に従う。現在地は実装計画のレビュー待ちである。実装計画の確認前に製品コードを書かない。
 
 ## Commands
 
@@ -28,7 +29,7 @@ python3 /Users/nakanokentaro/01_kcp/tools/scripts/harness_sync.py resolve superp
 
 ## Architecture
 
-配信先は Cloudflare Pages の Free。方式は Vite と TypeScript で、成果物は静的ファイル。UI フレームワークは未確定で、設計の節で確認する。生年月日の判定はページ取得後に端末内で終え、生年月日をサーバーや外部AIへ送らない。独自ドメインの購入は承認していない。
+設計の正本は `docs/superpowers/specs/2026-10-16-your-destiny-design.md` である。配信先は Cloudflare Pages の Free。方式は Vite と TypeScript。成果物は静的ファイル。UI は React を使わず、同じページの DOM を書き換える。生年月日の判定はページ取得後に端末内で終え、生年月日をサーバーや外部AIへ送らない。独自ドメインの購入は承認していない。
 
 ## Working rules
 
